@@ -1,5 +1,5 @@
 source common.sh
-component=catalogue
+component=shipping
 app_path=/app
 schema_setup=mysql
 
