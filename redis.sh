@@ -1,3 +1,5 @@
+source common.sh
+component=redis
 
 PRINT Disbale redis default
 dnf module disable redis -y
