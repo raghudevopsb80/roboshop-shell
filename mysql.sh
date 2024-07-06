@@ -1,5 +1,5 @@
 source common.sh
-component=mongo
+component=mysql
 
 PRINT Install MySQL Server
 dnf install mysql-server -y &>>$LOG_FILE
