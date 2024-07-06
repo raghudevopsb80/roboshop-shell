@@ -19,6 +19,25 @@ STAT() {
   fi
 }
 
+APP_PREREQ() {
+  PRINT Remove old content
+  rm -rf ${app_path}  &>>$LOG_FILE
+  STAT $?
+
+  PRINT Create App Directory
+  mkdir ${app_path}  &>>$LOG_FILE
+  STAT $?
+
+  PRINT Download Application Content
+  curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}-v3.zip  &>>$LOG_FILE
+  STAT $?
+
+  PRINT Extract Application Content
+  cd ${app_path}
+  unzip /tmp/${component}.zip  &>>$LOG_FILE
+  STAT $?
+}
+
 NODEJS() {
   PRINT Disable NodeJS Default Version
   dnf module disable nodejs -y &>>$LOG_FILE
@@ -47,22 +66,7 @@ NODEJS() {
   fi
   STAT $?
 
-  PRINT Cleaning Old Content
-  rm -rf /app &>>$LOG_FILE
-  STAT $?
-
-  PRINT Create App directory
-  mkdir /app &>>$LOG_FILE
-  STAT $?
-
-  PRINT Download App Content
-  curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}-v3.zip &>>$LOG_FILE
-  STAT $?
-
-  cd /app
-  PRINT Extract App Content
-  unzip /tmp/${component}.zip &>>$LOG_FILE
-  STAT $?
+  APP_PREREQ
 
   PRINT Download NodeJS Dependencies
   npm install &>>$LOG_FILE
