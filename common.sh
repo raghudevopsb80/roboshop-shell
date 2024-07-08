@@ -121,17 +121,12 @@ SCHEMA_SETUP() {
     dnf install mysql -y &>>$LOG_FILE
     STAT $?
 
-    PRINT Load Schema
-    mysql -h mysql.dev.rdevopsb80.online -uroot -pRoboShop@1 < /app/db/schema.sql &>>$LOG_FILE
-    STAT $?
+    for file in schema master-data app-user; do
+      PRINT Load file - $file.sql
+      mysql -h mysql.dev.rdevopsb80.online -uroot -pRoboShop@1 < /app/db/$file.sql &>>$LOG_FILE
+      STAT $?
+    done
 
-    PRINT Load Master Data
-    mysql -h mysql.dev.rdevopsb80.online -uroot -pRoboShop@1 < /app/db/master-data.sql &>>$LOG_FILE
-    STAT $?
-
-    PRINT Create App Users
-    mysql -h mysql.dev.rdevopsb80.online -uroot -pRoboShop@1 < /app/db/app-user.sql &>>$LOG_FILE
-    STAT $?
   fi
 
 }
